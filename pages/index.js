@@ -3,7 +3,7 @@ import NavBar from '../components/NavBar';
 export default function Home() {
   return (
     <div>
-      <NavBar />
+      <NavBar fontSize="30px" />
       <h1>Home</h1>
     </div>
   );
