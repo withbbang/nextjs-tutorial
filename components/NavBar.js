@@ -15,14 +15,11 @@ export default function NavBar(props) {
         </span>
       </Link>
       <style jsx>{`
-        nav {
-          background-color: tomato;
-        }
         a {
           text-decoration: none;
         }
         .active {
-          color: yellow;
+          color: red;
           font-size: ${props.fontSize};
         }
       `}</style>
