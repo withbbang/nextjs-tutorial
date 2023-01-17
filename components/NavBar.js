@@ -1,6 +1,10 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+/**
+ * Link 사용시 a 태그와 달리 페이지 새로고침 없이 페이지 렌더링
+ */
+
 export default function NavBar(props) {
   const router = useRouter();
 
