@@ -14,3 +14,9 @@
 ```
 
 2. 프로젝트 폴더에 .preetierrc 파일 추가 후 prettier 내용 기입
+
+##### Movie API Homepage
+
+```
+https://www.themoviedb.org/
+```
