@@ -41,6 +41,7 @@ https://www.themoviedb.org/
    - next.config.js에서 reactStrictMode: false로 한번만 출력되게 한다.
 
 2. useRouter.query가 빈값인 이유
+
    - Automatic Static Optimization(정적페이지 최적화) 때문
    - Automatic Static Optimization: pages 폴더 아래 모든 페이지에 대해서 getInitialProps가 있는지 없는지 판단해서 해당 페이지를 pre-render할지 server side rendering할지를 결정하는 과정
    - getInitialProps X: pre-render
@@ -48,3 +49,15 @@ https://www.themoviedb.org/
    - 현 프로젝트는 getInitialProps가 없으므로 pre-render하여 html을 미리 준비해둔다.
    - pre-render(빌드)하는 동안 useRouter.query가 빈 값이다.
    - pre-render 후 hydration(동적으로 화면을 구성하는 과정)을 거칠 때 쿼리객체 사용 가능.
+
+##### nextjs의 렌더링 특징
+
+1. pre-rendering(서버에서 미리 html구성)을 하지만 부분적으로 client side rendering을 한다.
+
+   - csr_1: 화면에서 api 데이터 요청 후 심기
+   - csr_2: useRouter를 이용하여 url 파라미터를 읽고 심기
+   - 특히 두번째 경우 조심해야 한다.
+
+2. 완전 server side rendering을 지원하고 싶다면 getServerSideProps을 잘 쓰자.
+   - 서버에서 api를 직접 요청 후 렌더링할 컴포넌트에 리턴한다.
+   - 서버에서 client가 요청한 url 파라미터를 미리 읽고 렌더링할 컴포넌트에 리턴한다.

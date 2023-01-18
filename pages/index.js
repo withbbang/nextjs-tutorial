@@ -18,15 +18,17 @@ export default function Home({ results }) {
      * But
      * 마스킹된 url을 직접 들어갈 경우나 상세 페이지에서 새로고침할 경우, query.title은 존재하지 않는다.
      */
-    router.push(
-      {
-        pathname: `/movies/${id}`,
-        query: {
-          title: original_title
-        }
-      },
-      `/movies/${id}`
-    );
+    // router.push(
+    //   {
+    //     pathname: `/movies/${id}`,
+    //     query: {
+    //       title: original_title
+    //     }
+    //   },
+    //   `/movies/${id}`
+    // );
+
+    router.push(`/movies/${original_title}/${id}`);
   };
   return (
     <div className="container">
@@ -35,15 +37,7 @@ export default function Home({ results }) {
         <div onClick={() => onClick(movie)} className="movie" key={movie.id}>
           <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
           <h4>
-            <Link
-              href={{
-                pathname: `/movies/${movie.id}`,
-                query: {
-                  title: movie.original_title
-                }
-              }}
-              as={`/movies/${movie.id}`}
-            >
+            <Link href={`/movies/${movie.original_title}/${movie.id}`}>
               {movie.original_title}
             </Link>
           </h4>
@@ -86,7 +80,7 @@ export default function Home({ results }) {
  * 반환한 객체는 현재 js파일의 컴포넌트의 props로 전달
  * 모든 페이지에서 각각 선언해야함
  *
- * pros: 모든 데이터를 서버에서 렌더링 후 내려주므로 보안상으로 좋음
+ * pros: 모든 데이터를 서버에서 렌더링 후 내려주므로 보안상으로 좋음, SEO에 좋다(이미 html에 data까지 박혀있기 때문)
  * cons: 서버의 상태나 네트워크 상태가 나쁠 경우 client는 빈 화면을 보고 있어야함
  *
  * 실행순서:
