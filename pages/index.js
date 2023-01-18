@@ -1,14 +1,52 @@
-import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import Seo from '../components/Seo';
 
 export default function Home({ results }) {
+  const router = useRouter();
+  const onClick = ({ id, original_title }) => {
+    /**
+     * router push params
+     * Url:
+     *  - pathname: 실제 요청할 url
+     *  - query: queryString param
+     * as:
+     *  - 브라우저에 마스킹될 url
+     *
+     * 이동한 페이지에서 useRouter query 객체 내에 router push query로 보낸 값 확인 가능, Link태그도 동일하게 사용 가능
+     *
+     * But
+     * 마스킹된 url을 직접 들어갈 경우나 상세 페이지에서 새로고침할 경우, query.title은 존재하지 않는다.
+     */
+    router.push(
+      {
+        pathname: `/movies/${id}`,
+        query: {
+          title: original_title
+        }
+      },
+      `/movies/${id}`
+    );
+  };
   return (
     <div className="container">
       <Seo title={'Home'} />
       {results?.map((movie) => (
-        <div className="movie" key={movie.id}>
-          <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
-          <h4>{movie.original_title}</h4>
+        <div onClick={() => onClick(movie)} className="movie" key={movie.id}>
+          <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
+          <h4>
+            <Link
+              href={{
+                pathname: `/movies/${movie.id}`,
+                query: {
+                  title: movie.original_title
+                }
+              }}
+              as={`/movies/${movie.id}`}
+            >
+              {movie.original_title}
+            </Link>
+          </h4>
         </div>
       ))}
       <style jsx>{`
@@ -17,6 +55,9 @@ export default function Home({ results }) {
           grid-template-columns: 1fr 1fr;
           padding: 20px;
           gap: 20px;
+        }
+        .movie {
+          cursor: pointer;
         }
         .movie img {
           max-width: 100%;
@@ -49,9 +90,8 @@ export default function Home({ results }) {
  * cons: 서버의 상태나 네트워크 상태가 나쁠 경우 client는 빈 화면을 보고 있어야함
  *
  * 실행순서:
- *  1. getServerSideProps에서 데이터 fetch 후 object 리턴
- *  2. _app.js에 pageProps로 전달
- *  3. 렌더링 되는 전체 컴포넌트(Component)에 전역적으로 props(pageProps) 전달
+ *  1. getServerSideProps에서 데이터 fetch 후 object 리턴, _app.js에 pageProps로 전달
+ *  2. _app.js에서 렌더링 되는 전체 컴포넌트(Component)에 전역적으로 props(pageProps) 전달
  */
 export const getServerSideProps = async () => {
   // 백엔드 서버에서 실행하는 api url이므로 next.config.js에 정의된 마스킹 url은 서버가 모른다.

@@ -6,7 +6,7 @@ const API_KEY = process.env.API_KEY;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   async redirects() {
     return [
       {
@@ -41,6 +41,10 @@ const nextConfig = {
         destination: `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}${encodeURIComponent(
           '&'
         )}language=:language${encodeURIComponent('&')}page=:page` // url에 쿼리스트링이 들어갈 경우
+      },
+      {
+        source: '/api/popular-movies/:id',
+        destination: `https://api.themoviedb.org/3/movie/:id?api_key=${API_KEY}`
       }
     ];
   }
